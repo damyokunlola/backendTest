@@ -31,25 +31,29 @@ namespace Test.Sevices
         {
             try
             {
-               _dbContext.Customer.Add(new Customer
+
+                var pwd = PasswordResource.Encrypt(customer.Password);
+
+                _dbContext.Customer.Add(new Customer
                {
                    Email=customer.Email,
                    PhoneNumber=customer.PhoneNumber,
                    StateOfResident = customer.StateOfResident,
                    LGA=customer.LGA,
-                   Password=customer.Password
+                   Password=pwd
                });
 
                 var checkEmail = _dbContext.Customer.Find(customer.Email);
                 if (checkEmail == null)
                 {
-                    _dbContext.SaveChanges();
-                    return new Response { Status = true, ResponseCode = "00", ResponseMessage = "Customer Added" };
+                    return new Response { Status = true, ResponseCode = "-1", ResponseMessage = "Email already exist" };
+
+                    
                 }
                 else
                 {
-                    return new Response { Status = true, ResponseCode = "-1", ResponseMessage = "Email already exist" };
-
+                    _dbContext.SaveChanges();
+                    return new Response { Status = true, ResponseCode = "00", ResponseMessage = "Customer Added" };
                 }
             }
             catch (Exception ex)
