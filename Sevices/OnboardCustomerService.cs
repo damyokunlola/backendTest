@@ -82,7 +82,7 @@ namespace Test.Sevices
                     var result = await response.Content.ReadAsStreamAsync();
 
                     banks = await JsonSerializer.DeserializeAsync<Banks>(result);
-                    return new Response { Status = true, ResponseCode = "00", ResponseMessage = "Success", ResponseData = result };
+                    return new Response { Status = true, ResponseCode = "00", ResponseMessage = "Success", ResponseData = banks };
                 }
                 else
                 {
